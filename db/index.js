@@ -8,7 +8,8 @@ mongoose.connect(
     `mongodb+srv://${user}:${password}@cluster0.zjxmg.mongodb.net/${db}?retryWrites=true&w=majority`,
     {
         useNewUrlParser: true,
-        useUnifiedTopology: true
+        useUnifiedTopology: true,
+        useCreateIndex: true,
     }
 ).then(() => {
     console.log(`${db} connected successfully`)

@@ -23,7 +23,7 @@ module.exports.postEmployee = async (req, res) => {
 
         const savedEmployee = await newEmployee.save()
 
-        res.json(savedEmployee)
+        res.status(201).json(savedEmployee)
     } catch(err) {
         console.log(err)
         res.status(500).json({

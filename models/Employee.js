@@ -31,18 +31,19 @@ const schema = new mongoose.Schema({
         profile_pic: String,
     },
     bank_details: {
-        // bank_name: "String",
-        // account_number: {
-        //     type: Number,
-        //     required: true,
-        // },
-        // ifsc: {
-        //     type: String,
-        //     required: true,
-        // },
+        bank_name: "String",
+        account_number: {
+            type: String,
+            required: true,
+        },
+        ifsc: {
+            type: String,
+            required: true,
+        },
         adhaar_card_number: {
             type: String,
             required: true,
+            unique: true,
             validate: {
                 validator: value => _get(value, "length") === 12 && /^[0-9]*$/.test(value),
                 message: "Invalid Adhaar number."
@@ -51,10 +52,66 @@ const schema = new mongoose.Schema({
         pan_card_number: {
             type: String,
             required: true,
+            unique: true,
             validate: {
                 validator: value => _get(value, "length") === 10 && /^([A-Z]){5}([0-9]){4}([A-Z]){1}?$/.test(value),
                 message: "Invalid PAN number."
             }
+        },
+    },
+    professional_details: {
+        experience: {
+            years: Number,
+            months: Number,
+        },
+        skills: [{
+            type: String,
+        }],
+        resume: {
+            type: String,
+            required: true,
+        },
+    },
+    educational_details: [{
+        course: {
+            type: String,
+            required: true,
+        },
+        university: {
+            type: String,
+            required: true,
+        },
+        passed_on: Date,
+        grade: String,
+    }],
+    past_works: [{
+        company: {
+            type: String,
+            required: true,
+        },
+        designation: String,
+        department: String,
+        ctc: Number,
+        from: {
+            type: Date,
+            required: true,
+        },
+        to: {
+            type: Date,
+            required: true,
+        },
+    }],
+    current_work: {
+        company: {
+            type: String,
+            required: true,
+        },
+        designation: String,
+        department: String,
+        ctc: Number,
+        from: {
+            type: Date,
+            required: true,
         },
     },
 }, {
