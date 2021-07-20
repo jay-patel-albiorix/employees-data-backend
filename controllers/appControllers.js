@@ -46,6 +46,7 @@ module.exports.patchEmployee = async (req, res) => {
             {
                 new: true,
                 upsert: false,
+                runValidators: true,
             }
         )
 
