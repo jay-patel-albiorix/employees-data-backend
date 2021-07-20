@@ -118,6 +118,15 @@ const schema = new mongoose.Schema({
     timestamps: true,
 })
 
+schema.index({
+    "createdAt": -1
+})
+
 const Employee = mongoose.model("employees", schema)
+
+Employee.on("index", err => {
+    if(err) console.log(err)
+    else console.log("On Employee model, index {createdAt: -1} has been created successfully")
+})
 
 module.exports = Employee
