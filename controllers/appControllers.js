@@ -8,9 +8,9 @@ module.exports.getEmployeeList = async (req, res) => {
         // console.log("params", _get(req, "params"))
         // console.log("query", _get(req, "query"))
 
-        const list = await Employee.aggregate([
+        const [ { data, meta: [ meta ] } ] = await Employee.aggregate([
             {
-                $match: {}  // manual filters from frontend
+                $match: JSON.parse(_get(req, "query.filter", "{}") ) // manual filters from frontend
             },
             {
                 $sort: {
@@ -18,14 +18,15 @@ module.exports.getEmployeeList = async (req, res) => {
                 }
             },
             {
-                $skip: _toInteger(_get(req, "query.skip", 0))
-            },
-            {
-                $limit: _toInteger(_get(req, "query.limit", 10))
-            },
-            {
                 $facet: {
-                    data: [],
+                    data: [
+                        {
+                            $skip: _toInteger(_get(req, "query.skip", 0))
+                        },
+                        {
+                            $limit: _toInteger(_get(req, "query.limit", 10))
+                        },
+                    ],
                     meta: [{
                         $count: "count"
                     }]
@@ -33,7 +34,10 @@ module.exports.getEmployeeList = async (req, res) => {
             }
         ])
 
-        res.json(list)
+        res.json({
+            data,
+            meta,
+        })
     } catch(err) {
         console.log(err)
         res.status(500).json({
