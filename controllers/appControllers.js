@@ -13,6 +13,9 @@ module.exports.getEmployeeList = async (req, res) => {
                 $match: JSON.parse(_get(req, "query.filter", "{}") ) // manual filters from frontend
             },
             {
+                $project: JSON.parse(_get(req, "query.keys", '{"_id": 1}'))
+            },
+            {
                 $sort: {
                     "createdAt": -1
                 }
