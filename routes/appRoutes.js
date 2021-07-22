@@ -1,5 +1,6 @@
 const express = require("express")
 const { 
+    getEmployee,
     getEmployeeList,
     postEmployee,
     patchEmployee,
@@ -8,6 +9,7 @@ const {
 
 const router = express.Router()
 
+router.get("/employee/one/:id", getEmployee)
 
 router.get("/employee/list", getEmployeeList)
 

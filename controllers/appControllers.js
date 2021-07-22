@@ -3,6 +3,22 @@ const _toInteger = require("lodash/toInteger")
 
 const Employee = require("../models/Employee")
 
+
+module.exports.getEmployee = async (req, res) => {
+    try {
+        // console.log("params", _get(req, "params"))
+        
+        const employee = await Employee.findById(_get(req, "params.id"))
+        res.status(200).json(employee)
+    } catch(err) {
+        console.log(err)
+        res.status(400).json({
+            name: err.name,
+            message: err.message
+        })
+    }
+}
+
 module.exports.getEmployeeList = async (req, res) => {
     try {
         // console.log("params", _get(req, "params"))
