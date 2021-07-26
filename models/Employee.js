@@ -17,10 +17,18 @@ const schema = new mongoose.Schema({
         phone: {
             type: String,
             required: (() => !_has(this, "email")).bind(this),
+            validate: {
+                validator: value => /^\d{10}$/.test(value),
+                message: "Invalid phone",
+            }
         },
         email: {
             type: String,
             required: (() => !_has(this, "phone")).bind(this),
+            validate: {
+                validator: value => /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(value),
+                message: "Invalid email",
+            },
         },
         date_of_birth: {
             type: Date,
