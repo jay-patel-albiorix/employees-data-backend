@@ -3,6 +3,7 @@ const _get = require("lodash/get")
 const _toString = require("lodash/toString")
 const _has = require("lodash/has")
 const _toInteger = require("lodash/toInteger")
+const _isEqual = require("lodash/isEqual")
 
 const schema = new mongoose.Schema({
     personal_details: {
@@ -18,7 +19,7 @@ const schema = new mongoose.Schema({
             type: String,
             required: (() => !_has(this, "email")).bind(this),
             validate: {
-                validator: value => /^\d{10}$/.test(value),
+                validator: value => _isEqual(_get(value, "length"), 10) && /^\d{10}$/.test(value),
                 message: "Invalid phone",
             }
         },
