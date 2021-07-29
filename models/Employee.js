@@ -72,10 +72,7 @@ const schema = new mongoose.Schema({
         skills: [{
             type: String,
         }],
-        resume: {
-            type: String,
-            required: true,
-        },
+        resume: String,
     },
     educational_details: [{
         course: {
