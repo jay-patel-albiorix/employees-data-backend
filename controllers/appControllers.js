@@ -86,7 +86,7 @@ module.exports.postEmployee = async (req, res) => {
 }
 
 
-module.exports.patchEmployee = async (req, res) => {
+module.exports.putEmployee = async (req, res) => {
     try {
         // console.log("params", _get(req, "params"))
         // console.log("body", _get(req, "body"))

@@ -17,18 +17,14 @@ const schema = new mongoose.Schema({
         },
         phone: {
             type: String,
-            required: (() => !_has(this, "email")).bind(this),
-            validate: {
-                validator: value => _isEqual(_get(value, "length"), 10) && /^\d{10}$/.test(value),
-                message: "Invalid phone",
-            }
+            required: function () {
+                return _get(this, "personal_details.email") ? false : true
+            },
         },
         email: {
             type: String,
-            required: (() => !_has(this, "phone")).bind(this),
-            validate: {
-                validator: value => /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(value),
-                message: "Invalid email",
+            required: function() {
+                return _get(this, "personal_details.phone") ? false : true
             },
         },
         date_of_birth: {
@@ -101,14 +97,8 @@ const schema = new mongoose.Schema({
         designation: String,
         department: String,
         ctc: Number,
-        from: {
-            type: Date,
-            required: true,
-        },
-        to: {
-            type: Date,
-            required: true,
-        },
+        from: Date,
+        to: Date,
     }],
     current_work: {
         company: {

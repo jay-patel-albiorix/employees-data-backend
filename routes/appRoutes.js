@@ -3,7 +3,7 @@ const {
     getEmployee,
     getEmployeeList,
     postEmployee,
-    patchEmployee,
+    putEmployee,
     deleteEmployee,
 } = require("../controllers/appControllers")
 
@@ -15,7 +15,7 @@ router.get("/employee/list", getEmployeeList)
 
 router.post("/employee/new", postEmployee)
 
-router.put("/employee/edit/:id", patchEmployee)
+router.put("/employee/edit/:id", putEmployee)
 
 router.delete("/employee/delete/:id", deleteEmployee)
 
