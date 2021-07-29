@@ -92,13 +92,12 @@ module.exports.patchEmployee = async (req, res) => {
         // console.log("body", _get(req, "body"))
         // console.log("id", _get(req, "params.id"))
 
-        const updatedEmployee = await Employee.findByIdAndUpdate(
-            _get(req, "params.id"),
+        const updatedEmployee = await Employee.findOneAndReplace(
+            {_id: _get(req, "params.id")},
             _get(req, "body"),
             {
                 new: true,
                 upsert: false,
-                runValidators: true,
             }
         )
 
