@@ -3,6 +3,8 @@ const _toInteger = require("lodash/toInteger")
 
 const Employee = require("../models/Employee")
 
+const cloudinary = require("../utilities/cloudinary")
+const bufferToString = require("../utilities/bufferToString")
 
 module.exports.getEmployee = async (req, res) => {
     try {
@@ -135,3 +137,24 @@ module.exports.deleteEmployee = async (req, res) => {
     }
 }
 
+module.exports.upload = async (req, res) => {
+    try {
+        console.log("upload")
+        // console.log("\nreq.body", req.body)
+        console.log("\nreq.file", req.file)
+        // console.log("\nreq.files", req.files)
+
+        const stringed = bufferToString(_get(req, "file.originalname"), _get(req, "file.buffer"))
+        // console.log("stringed", stringed)
+        const { secure_url } = await cloudinary.uploader.upload(stringed)
+        console.log("uploaded", secure_url)
+
+        res.status(201).json({url: secure_url})
+    } catch(err) {
+        console.log(err)
+        res.status(400).json({
+            name: err.name,
+            message: err.message
+        })
+    }
+}
