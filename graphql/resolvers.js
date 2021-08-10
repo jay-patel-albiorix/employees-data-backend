@@ -1,4 +1,5 @@
 const { GraphQLScalarType } = require('graphql')
+const { ApolloError } = require("apollo-server")
 
 const resolvers = {
     Query: {
@@ -26,6 +27,7 @@ const resolvers = {
                 return list
             } catch(err) {
                 console.log(err)
+                throw new ApolloError(err)
             }
         },
         employee: async (parent, args, context, info) => {
@@ -40,8 +42,56 @@ const resolvers = {
                 return employee 
             } catch(err) {
                 console.log(err)
+                throw new ApolloError(err)
             }
         }
+    },
+    Mutation: {
+        post: async (parent, args, context, info) => {
+            try {
+                console.log(
+                    "\n\npost employee resolver",
+                    // "\nparent", parent,
+                    "\nargs", args,
+                ) 
+                const employee = await context.dataSources.employees.postEmployee(args.data)
+                console.log("employee", employee)
+                return employee 
+            } catch(err) {
+                console.log(err)
+                throw new ApolloError(err)
+            }
+        },
+        put: async (parent, args, context, info) => {
+            try {
+                console.log(
+                    "\n\nput employee resolver",
+                    // "\nparent", parent,
+                    "\nargs", args,
+                ) 
+                const employee = await context.dataSources.employees.putEmployee(args._id, args.data)
+                console.log("employee", employee)
+                return employee 
+            } catch(err) {
+                console.log(err)
+                throw new ApolloError(err)
+            }
+        },
+        delete: async (parent, args, context, info) => {
+            try {
+                console.log(
+                    "\n\ndelete employee resolver",
+                    // "\nparent", parent,
+                    "\nargs", args,
+                ) 
+                const employee = await context.dataSources.employees.deleteEmployee(args._id)
+                console.log("employee", employee)
+                return employee 
+            } catch(err) {
+                console.log(err)
+                throw new ApolloError(err)
+            }
+        },
     },
     Date: new GraphQLScalarType({
         name: 'Date',

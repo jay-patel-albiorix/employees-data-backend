@@ -13,6 +13,19 @@ const typeDefs = gql`
         ): Employee
     }
 
+    type Mutation {
+        post(
+            data: EmployeeInput!
+        ): Employee
+        put(
+            _id: ID!, 
+            data: EmployeeInput!
+        ): Employee
+        delete(
+            _id: ID!
+        ): Employee
+    }
+
     type EmployeeListResponse {
         data: [Employee!]
         meta: EmployeeListMeta
@@ -30,9 +43,34 @@ const typeDefs = gql`
         educational_details: [Education!]
         past_works: [PastWork!]
         current_work: CurrentWork
+        createdAt: Date
+        updatedAt: Date
+        _v: Int
+    }
+
+    input EmployeeInput {
+        _id: ID
+        personal_details: PersonalDetailsInput
+        bank_details: BankDetailsInput
+        professional_details: ProfessionalDetailsInput
+        educational_details: [EducationInput!]
+        past_works: [PastWorkInput!]
+        current_work: CurrentWorkInput
+        createdAt: Date!
+        updatedAt: Date
+        _v: Int!
     }
 
     type PersonalDetails {
+        first_name: String
+        last_name: String
+        date_of_birth: Date
+        phone: String
+        email: String
+        profile_pic: String
+    }
+
+    input PersonalDetailsInput {
         first_name: String
         last_name: String
         date_of_birth: Date
@@ -48,18 +86,45 @@ const typeDefs = gql`
         adhaar_card_number: String
     }
 
+    input BankDetailsInput {
+        account_number: String
+        ifsc: String
+        pan_card_number: String
+        adhaar_card_number: String
+    }
+
     type ProfessionalDetails {
-        experience: Experience
+        experience: TotalExperience
         skills: [String]
         resume: String
     }
 
-    type Experience {
+    input ProfessionalDetailsInput {
+        experience: TotalExperienceInput
+        skills: [String]
+        resume: String
+    }
+
+    type TotalExperience {
+        years: Int
+        months: Int
+    }
+
+    input TotalExperienceInput {
         years: Int
         months: Int
     }
 
     type Education {
+        _id: ID
+        course: String
+        university: String
+        passed_on: Date
+        grade: String
+    }
+
+    input EducationInput {
+        _id: ID
         course: String
         university: String
         passed_on: Date
@@ -67,6 +132,17 @@ const typeDefs = gql`
     }
 
     type PastWork {
+        _id: ID
+        company: String
+        designation: String
+        department: String
+        ctc: Float
+        from: Date
+        to: Date
+    }
+
+    input PastWorkInput {
+        _id: ID
         company: String
         designation: String
         department: String
@@ -76,6 +152,14 @@ const typeDefs = gql`
     }
 
     type CurrentWork {
+        company: String
+        designation: String
+        department: String
+        ctc: Float
+        from: Date
+    }
+
+    input CurrentWorkInput {
         company: String
         designation: String
         department: String

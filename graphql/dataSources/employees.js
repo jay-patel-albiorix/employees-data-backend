@@ -44,6 +44,7 @@ module.exports.getEmployeeList = async (
         }
     } catch(err) {
         console.log(err)
+        throw new Error("getting list failed")
     }
 
 }
@@ -55,6 +56,60 @@ module.exports.getEmployee = async (_id) => {
         
     } catch(err) {
         console.log(err)
+        throw new Error("getting doc failed")
     }
 
+}
+
+
+module.exports.postEmployee = async (data) => {
+    try {
+        const newEmployee = new Employee(data)
+
+        const savedEmployee = await newEmployee.save()  
+
+        return savedEmployee      
+    } catch(err) {
+        console.log(err)
+        throw new Error("Posting doc failed")
+    }
+
+}
+
+
+module.exports.putEmployee = async (_id, data) => {
+    try {
+        console.log("dataSource putEmployee", _id, data)
+        const updatedEmployee = await Employee.findOneAndReplace(
+            {_id},
+            data,
+            {
+                new: true,
+                upsert: false,
+            }
+        )
+
+        if(!updatedEmployee) throw new Error("No document found")
+
+        return updatedEmployee
+
+    } catch(err) {
+        console.log(err)
+        throw new Error("Posting doc failed")
+    }
+
+}
+
+
+module.exports.deleteEmployee = async(_id) => {
+    try {
+        const deletedEmployee = await Employee.findByIdAndDelete(_id)
+        
+        if(!deletedEmployee) throw new Error("No document found")
+
+        return deletedEmployee
+    } catch(err) {
+        console.log(err)
+        throw new Error("Deleting doc failed")
+    }
 }
