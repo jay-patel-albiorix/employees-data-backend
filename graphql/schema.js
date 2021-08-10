@@ -8,7 +8,9 @@ const typeDefs = gql`
             skip: Int
             limit: Int
         ): EmployeeListResponse
-        employee: Employee
+        employee(
+            _id: ID!
+        ): Employee
     }
 
     type EmployeeListResponse {

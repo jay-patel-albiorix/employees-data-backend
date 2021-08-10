@@ -47,3 +47,14 @@ module.exports.getEmployeeList = async (
     }
 
 }
+
+
+module.exports.getEmployee = async (_id) => {
+    try {
+        return await Employee.findById(_id)
+        
+    } catch(err) {
+        console.log(err)
+    }
+
+}
