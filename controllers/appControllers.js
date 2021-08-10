@@ -121,7 +121,7 @@ module.exports.deleteEmployee = async (req, res) => {
         // console.log("params", _get(req, "params"))
         // console.log("id", _get(req, "params.id"))
         
-        const deletedEmployee = await Employee.findOneAndDelete(
+        const deletedEmployee = await Employee.findByIdAndDelete(
             _get(req, "params.id"),
         )
         
