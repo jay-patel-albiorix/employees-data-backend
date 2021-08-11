@@ -4,6 +4,7 @@ const typeDefs = gql`
     type Query {
         employeeList(
             keys: String!
+            search: String
             filter: String
             skip: Int
             limit: Int

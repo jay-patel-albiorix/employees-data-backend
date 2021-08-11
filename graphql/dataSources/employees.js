@@ -4,6 +4,7 @@ const Employee = require("../../models/Employee")
 
 module.exports.getEmployeeList = async (
     keys = '{"_id": 1}',
+    search,
     filter = '{}', 
     skip = 0,
     limit = 10,

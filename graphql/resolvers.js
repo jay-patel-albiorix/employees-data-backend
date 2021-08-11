@@ -19,6 +19,7 @@ const resolvers = {
                 )
                 const list = await context.dataSources.employees.getEmployeeList(
                     args.keys,
+                    args.search,
                     args.filter,
                     args.skip,
                     args.limit,
