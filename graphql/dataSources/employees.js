@@ -1,18 +1,89 @@
 const _toInteger = require("lodash/toInteger")
+const _split = require("lodash/split")
+const _map = require("lodash/map")
+const _trim = require("lodash/trim")
 
 const Employee = require("../../models/Employee")
 
 module.exports.getEmployeeList = async (
     keys = '{"_id": 1}',
-    search,
-    filter = '{}', 
+    search = "",
     skip = 0,
     limit = 10,
 ) => {
     try {
+
+        const split = _split(_trim(search), / +/)
+        const filter = search ? {
+            $or: [
+                ..._map(
+                    split,
+                    splitWord => (
+                        {
+                            $expr: {
+                                $regexMatch: {
+                                    input: "$personal_details.first_name",
+                                    regex: splitWord,
+                                    options: "i"
+                                }
+                            }
+
+                        }
+                    )
+                ),
+                ..._map(
+                    split,
+                    splitWord => (
+                        {
+                            $expr: {
+                                $regexMatch: {
+                                    input: "$personal_details.last_name",
+                                    regex: splitWord,
+                                    options: "i"
+                                }
+                            }
+
+                        }
+                    )
+                ),
+                ..._map(
+                    split,
+                    splitWord => (
+                        {
+                            $expr: {
+                                $regexMatch: {
+                                    input: "$current_work.designation",
+                                    regex: splitWord,
+                                    options: "i"
+                                }
+                            }
+
+                        }
+                    )
+                ),
+                ..._map(
+                    split,
+                    splitWord => (
+                        {
+                            $expr: {
+                                $regexMatch: {
+                                    input: "$current_work.department",
+                                    regex: splitWord,
+                                    options: "i"
+                                }
+                            }
+
+                        }
+                    )
+                )
+            ]
+        } : {}
+
+        console.log("\nlist filter", filter)
+
         const [ { data, meta: [ meta ] } ] = await Employee.aggregate([
             {
-                $match: JSON.parse(filter)   // manual filters from frontend
+                $match: filter   // manual filters from frontend
             },
             {
                 $sort: {
@@ -41,7 +112,7 @@ module.exports.getEmployeeList = async (
 
        return {
             data,
-            meta,
+            meta: meta || {count: 0},
         }
     } catch(err) {
         console.log(err)
