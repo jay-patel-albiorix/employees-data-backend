@@ -5,7 +5,6 @@ const typeDefs = gql`
         employeeList(
             keys: String!
             search: String
-            filter: String
             skip: Int
             limit: Int
         ): EmployeeListResponse
