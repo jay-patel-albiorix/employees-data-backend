@@ -112,6 +112,7 @@ const schema = new mongoose.Schema({
     },
 }, {
     timestamps: true,
+    versionKey: "schema_version",
 })
 
 schema.index({
