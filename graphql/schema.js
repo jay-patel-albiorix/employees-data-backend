@@ -43,9 +43,9 @@ const typeDefs = gql`
         educational_details: [Education!]
         past_works: [PastWork!]
         current_work: CurrentWork
-        createdAt: Date
+        createdAt: Date!
         updatedAt: Date
-        _v: Int
+        schema_version: Int!
     }
 
     input EmployeeInput {
@@ -56,9 +56,9 @@ const typeDefs = gql`
         educational_details: [EducationInput!]
         past_works: [PastWorkInput!]
         current_work: CurrentWorkInput
-        createdAt: Date!
+        createdAt: Date
         updatedAt: Date
-        _v: Int!
+        schema_version: Int
     }
 
     type PersonalDetails {
@@ -111,8 +111,8 @@ const typeDefs = gql`
     }
 
     input TotalExperienceInput {
-        years: Int
-        months: Int
+        years: String
+        months: String
     }
 
     type Education {
@@ -146,7 +146,7 @@ const typeDefs = gql`
         company: String
         designation: String
         department: String
-        ctc: Float
+        ctc: String
         from: Date
         to: Date
     }
@@ -163,7 +163,7 @@ const typeDefs = gql`
         company: String
         designation: String
         department: String
-        ctc: Float
+        ctc: String
         from: Date
     }
 

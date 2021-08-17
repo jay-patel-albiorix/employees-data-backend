@@ -128,7 +128,7 @@ module.exports.getEmployee = async (_id) => {
         
     } catch(err) {
         console.log(err)
-        throw new Error("getting doc failed")
+        throw new Error(err.message || "getting doc failed")
     }
 
 }
@@ -143,7 +143,7 @@ module.exports.postEmployee = async (data) => {
         return savedEmployee      
     } catch(err) {
         console.log(err)
-        throw new Error("Posting doc failed")
+        throw new Error(err.message || "Posting doc failed")
     }
 
 }
@@ -167,7 +167,7 @@ module.exports.putEmployee = async (_id, data) => {
 
     } catch(err) {
         console.log(err)
-        throw new Error("Posting doc failed")
+        throw new Error(err.message || "Puting doc failed")
     }
 
 }
@@ -182,6 +182,6 @@ module.exports.deleteEmployee = async(_id) => {
         return deletedEmployee
     } catch(err) {
         console.log(err)
-        throw new Error("Deleting doc failed")
+        throw new Error(err.message || "Deleting doc failed")
     }
 }
