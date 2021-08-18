@@ -1,5 +1,8 @@
 const { GraphQLScalarType } = require('graphql')
-const { ApolloError } = require("apollo-server")
+const { ApolloError } = require("apollo-server-express")
+const { GraphQLUpload } = require("graphql-upload")
+
+const _includes = require("lodash/includes")
 
 const resolvers = {
     Query: {
@@ -92,6 +95,24 @@ const resolvers = {
                 throw new ApolloError(err)
             }
         },
+        upload: async (parent, args, context, info) => {
+            try {
+                console.log(
+                    "\n\nupload resolver",
+                    "\nargs", args,
+                )
+                const { createReadStream, filename, mimetype } = await args.file
+                
+                if(!_includes(["image/jpg", "image/jpeg", "image/png"], mimetype)) throw "Only jpg, jpeg & png are accepted"
+
+                const file = await context.dataSources.upload.upload(createReadStream())
+                console.log("file", file)
+                return file
+            } catch(err) {
+                console.log(err)
+                throw new ApolloError(err)
+            }
+        }
     },
     Date: new GraphQLScalarType({
         name: 'Date',
@@ -103,6 +124,7 @@ const resolvers = {
             return new Date(value)
         },
     }),
+    Upload: GraphQLUpload,
 }
 
 module.exports = resolvers

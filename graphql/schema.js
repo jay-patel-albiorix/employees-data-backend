@@ -1,4 +1,4 @@
-const { gql } = require("apollo-server")
+const { gql } = require("apollo-server-express")
 
 const typeDefs = gql`
     type Query {
@@ -24,6 +24,7 @@ const typeDefs = gql`
         delete(
             _id: ID!
         ): Employee
+        upload(file: Upload!): File!
     }
 
     type EmployeeListResponse {
@@ -167,7 +168,13 @@ const typeDefs = gql`
         from: Date
     }
 
+    type File {
+        url: String!
+    }
+
     scalar Date
+
+    scalar Upload
 `
 
 module.exports = typeDefs

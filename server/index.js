@@ -2,30 +2,54 @@
 const dotenv = require("dotenv")
 dotenv.config()
 
-const { ApolloServer } = require("apollo-server")
+const express = require("express")
+const { ApolloServer } = require("apollo-server-express")
+const { graphqlUploadExpress } = require("graphql-upload")
 
 const typeDefs = require("../graphql/schema")
 const resolvers = require("../graphql/resolvers")
 const employeesDataSources = require("../graphql/dataSources/employees")
+const uploadDataSources = require("../graphql/dataSources/upload")
 
 require("../db/index.js")
 
 
-const port = process.env.PORT || 8080
-const server = new ApolloServer({
-    port,
-    cors: {
-        origin: "*",
-    },
-    typeDefs,
-    resolvers,
-    dataSources: () => {
-        return {
-            employees: employeesDataSources,
-        } 
-    }
-})
+const startServer = async () => {
+    console.log("Starting server")
 
-server.listen().then(({ url }) => {
-    console.log("server is running on ", url)
-})
+    const port = process.env.PORT || 4000
+
+    const server = new ApolloServer({
+        cors: {
+            origin: "*",
+        },
+        typeDefs,
+        resolvers,
+        dataSources: () => {
+            return {
+                employees: employeesDataSources,
+                upload: uploadDataSources,
+            } 
+        }
+    })
+    
+    await server.start()
+
+
+    const app = express()
+
+    app.use(graphqlUploadExpress())
+
+    server.applyMiddleware({
+        app,
+    })
+
+    await new Promise(r => app.listen({
+        port,
+    }, r))
+    
+    console.log(`graphql server is running on port: ${port}, route: ${server.graphqlPath}`)
+
+} 
+
+startServer()
