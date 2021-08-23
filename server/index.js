@@ -27,8 +27,8 @@ const startServer = async () => {
         resolvers,
         dataSources: () => {
             return {
-                employees: employeesDataSources,
-                upload: uploadDataSources,
+                employees:  new employeesDataSources(),
+                upload: new uploadDataSources(),
             } 
         }
     })
