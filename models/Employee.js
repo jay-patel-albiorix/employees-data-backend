@@ -17,15 +17,19 @@ const schema = new mongoose.Schema({
         },
         phone: {
             type: String,
-            required: function () {
-                return _get(this, "personal_details.email") ? false : true
-            },
+            required: true,
+            validate: {
+                validator: value => _isEqual(_get(value, "length"), 10) && /^\d{10}$/.test(value),
+                message: "Invalid phone",
+            }
         },
         email: {
             type: String,
-            required: function() {
-                return _get(this, "personal_details.phone") ? false : true
-            },
+            required: true,
+            validate: {
+                validator: value => /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(value),
+                message: "Invalid email",
+            }
         },
         date_of_birth: {
             type: Date,
@@ -49,6 +53,7 @@ const schema = new mongoose.Schema({
             type: String,
             required: true,
             unique: true,
+            sparse: true,
             validate: {
                 validator: value => _get(value, "length") === 12 && /^[0-9]*$/.test(value),
                 message: "Invalid Adhaar number."
@@ -58,6 +63,7 @@ const schema = new mongoose.Schema({
             type: String,
             required: true,
             unique: true,
+            sparse: true,
             validate: {
                 validator: value => _get(value, "length") === 10 && /^([A-Z]){5}([0-9]){4}([A-Z]){1}?$/.test(value),
                 message: "Invalid PAN number."

@@ -65,14 +65,14 @@ const resolvers = {
                 throw new ApolloError(err)
             }
         },
-        put: async (parent, args, context, info) => {
+        patch: async (parent, args, context, info) => {
             try {
                 console.log(
-                    "\n\nput employee resolver",
+                    "\n\npatch employee resolver",
                     // "\nparent", parent,
                     "\nargs", args,
                 ) 
-                const employee = await context.dataSources.employees.putEmployee(args._id, args.data)
+                const employee = await context.dataSources.employees.patchEmployee(args._id, args.data)
                 console.log("employee", employee)
                 return employee 
             } catch(err) {

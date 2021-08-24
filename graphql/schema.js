@@ -17,7 +17,7 @@ const typeDefs = gql`
         post(
             data: EmployeeInput!
         ): Employee
-        put(
+        patch(
             _id: ID!, 
             data: EmployeeInput!
         ): Employee

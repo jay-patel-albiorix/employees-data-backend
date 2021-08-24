@@ -139,8 +139,10 @@ class EmployeeDataSource {
     postEmployee = async (data) => {
         try {
             const newEmployee = new Employee(data)
-    
-            const savedEmployee = await newEmployee.save()  
+            console.log("newEmployee model instance", newEmployee)
+            const savedEmployee = await newEmployee.save({
+                validateBeforeSave: false,
+            })  
     
             return savedEmployee      
         } catch(err) {
@@ -151,15 +153,16 @@ class EmployeeDataSource {
     }
     
     
-    putEmployee = async (_id, data) => {
+    patchEmployee = async (_id, data) => {
         try {
-            console.log("dataSource putEmployee", _id, data)
-            const updatedEmployee = await Employee.findOneAndReplace(
-                {_id},
+            console.log("dataSource patchEmployee", _id, data)
+            const updatedEmployee = await Employee.findByIdAndUpdate(
+                _id,
                 data,
                 {
                     new: true,
                     upsert: false,
+                    runValidators: true,
                 }
             )
     
@@ -169,7 +172,7 @@ class EmployeeDataSource {
     
         } catch(err) {
             console.log(err)
-            throw new Error(err.message || "Puting doc failed")
+            throw new Error(err.message || "Patching doc failed")
         }
     
     }
